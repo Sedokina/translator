@@ -1,6 +1,8 @@
-﻿namespace Translator.Domain
+﻿using Translator.Domain.Interfaces;
+
+namespace Translator.Domain
 {
-    public class Role
+    public class Role : IRole
     {
         public short Id { get; private set; }
         public string Name { get; set; }

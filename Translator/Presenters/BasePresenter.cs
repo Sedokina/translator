@@ -1,6 +1,4 @@
-﻿using Translator.Dependencies;
-using Translator.Domain;
-using Translator.Presenters.Interfaces;
+﻿using Translator.Presenters.Interfaces;
 using Translator.Views;
 
 namespace Translator.Presenters

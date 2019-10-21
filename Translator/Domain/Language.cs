@@ -1,8 +1,9 @@
-﻿namespace Translator.Domain
-{
-    public class Language
-    {
+﻿using Translator.Domain.Interfaces;
 
+namespace Translator.Domain
+{
+    public class Language : ILanguage
+    {
         public short Id { get; private set; }
         public string Name { get; set; }
 

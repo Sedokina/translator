@@ -3,10 +3,11 @@ using System.Linq;
 using BCrypt.Net;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
+using Translator.Domain.Interfaces;
 
 namespace Translator.Domain
 {
-    public class User
+    public class User : IUser
     {
         private readonly IUserMapper _userMapper = ServiceLocator.Instance.GetService<IUserMapper>();
         private readonly IRoleMapper _roleMapper = ServiceLocator.Instance.GetService<IRoleMapper>();
@@ -42,14 +43,14 @@ namespace Translator.Domain
 
         public bool Authorize(string username, string password)
         {
-            var user = _userMapper.FindWithPassword(username);
+            var user = _userMapper.FindWithPassword(username) as User;
             if (user == null || !BCrypt.Net.BCrypt.EnhancedVerify(password, user._password, HashType.SHA256))
                 return IsAuthorized = false;
 
             Id = user.Id;
             Username = user.Username;
 
-            var roles = _roleMapper.GetUserRoles(Id);
+            var roles = _roleMapper.GetUserRoles(Id) as List<Role>;
             if (roles == null)
                 return IsAuthorized = false;
             Roles = roles.ToList();

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Translator.Domain;
+using Translator.Domain.Interfaces;
 
 namespace Translator.DataMapper.Interfaces
 {
     public interface ILanguageMapper
     {
-        Language Find(short id);
-        IEnumerable<Language> GetLanguages();
+        ILanguage Find(short id);
+        IEnumerable<ILanguage> GetLanguages();
     }
 }

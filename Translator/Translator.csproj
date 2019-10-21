@@ -58,11 +58,26 @@
     <Compile Include="DataMapper\Mappers\RoleMapper.cs" />
     <Compile Include="DataMapper\Mappers\UserMapper.cs" />
     <Compile Include="DataMapper\Mappers\WordMapper.cs" />
+    <Compile Include="Domain\Interfaces\ILanguage.cs" />
+    <Compile Include="Domain\Interfaces\IRole.cs" />
+    <Compile Include="Domain\Interfaces\ITranslation.cs" />
+    <Compile Include="Domain\Interfaces\IUser.cs" />
+    <Compile Include="Domain\Interfaces\IWord.cs" />
     <Compile Include="Domain\Language.cs" />
     <Compile Include="Domain\Role.cs" />
     <Compile Include="Domain\Translation.cs" />
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\Word.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RolesResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RolesResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Translator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +102,14 @@
     <Compile Include="Views\IAuthorizationView.cs" />
     <Compile Include="Views\ITranslatorView.cs" />
     <Compile Include="Views\IView.cs" />
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RolesResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RolesResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Translator.resx">
       <DependentUpon>Translator.cs</DependentUpon>
     </EmbeddedResource>
@@ -121,6 +144,9 @@
       <Project>{B102E618-C4DF-4B0B-AEDC-3D5499C27CAB}</Project>
       <Name>Translator.DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Forms\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

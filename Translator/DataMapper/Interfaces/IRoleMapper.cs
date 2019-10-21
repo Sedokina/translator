@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Translator.Domain;
+using Translator.Domain.Interfaces;
 
 namespace Translator.DataMapper.Interfaces
 {
     public interface IRoleMapper
     {
-        IEnumerable<Role> GetRoles();
-        IEnumerable<Role> GetUserRoles(int id);
+        IEnumerable<IRole> GetRoles();
+        IEnumerable<IRole> GetUserRoles(int id);
     }
 }

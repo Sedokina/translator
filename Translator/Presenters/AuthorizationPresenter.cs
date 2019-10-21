@@ -22,7 +22,7 @@ namespace Translator.Presenters
             }
             else
             {
-                View.ShowError("Неверный логин или пароль");
+                View.ShowError(Resources.WrongCredentials);
             }
         }
     }

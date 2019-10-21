@@ -2,6 +2,7 @@
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
 using Translator.Domain;
+using Translator.Domain.Interfaces;
 using Translator.Views;
 
 namespace Translator.Presenters
@@ -19,7 +20,7 @@ namespace Translator.Presenters
             GetTranslations();
             View.FindTranslations += () => FindTranslations(View.SearchingText, View.Language);
 
-            if (User.IsInRole("Administrator"))
+            if (User.IsInRole(RolesResource.Administrator))
             {
                 View.UpdateTranslation += () => UpdateTranslation(View.SelectedTranslation.Id,
                     View.TranslatableText, View.TranslatableLanguage,
@@ -43,19 +44,19 @@ namespace Translator.Presenters
             View.UpdateTranslationView(_wordMapper.GetTranslations());
         }
 
-        public void FindTranslations(string searchingText, Language language)
+        public void FindTranslations(string searchingText, ILanguage language)
         {
             var translation = _wordMapper.FindTranslation(searchingText, language.Id).ToList();
             if (!translation.Any())
             {
-                View.ShowError("Перевод не найден");
+                View.ShowError(Resources.TranslationNotFound);
             }
 
             View.UpdateTranslationView(translation);
         }
 
-        public void UpdateTranslation(long translationId, string translatableWord, Language translatableLanguage,
-            string translatedWord, Language translatedLanguage)
+        public void UpdateTranslation(long translationId, string translatableWord, ILanguage translatableLanguage,
+            string translatedWord, ILanguage translatedLanguage)
         {
             var translatable = _wordMapper.Find(translatableWord) ??
                                _wordMapper.Add(new Word(translatableWord, translatableLanguage));
@@ -65,8 +66,8 @@ namespace Translator.Presenters
             GetTranslations();
         }
 
-        public void AddTranslation(string translatableWord, Language translatableLanguage, string translatedWord,
-            Language translatedLanguage)
+        public void AddTranslation(string translatableWord, ILanguage translatableLanguage, string translatedWord,
+            ILanguage translatedLanguage)
         {
             var translatable = _wordMapper.Find(translatableWord) ??
                                _wordMapper.Add(new Word(translatableWord, translatableLanguage));

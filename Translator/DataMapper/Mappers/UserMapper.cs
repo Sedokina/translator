@@ -4,6 +4,7 @@ using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
 using Translator.Domain;
+using Translator.Domain.Interfaces;
 
 namespace Translator.DataMapper.Mappers
 {
@@ -16,7 +17,7 @@ namespace Translator.DataMapper.Mappers
             _dbManager = ServiceLocator.Instance.GetService<IDbManager>();
         }
 
-        public User Find(string username)
+        public IUser Find(string username)
         {
             var idParameter = _dbManager.CreateParameter("@username", username, DbType.Int32);
             var reader = _dbManager.GetDataReader(
@@ -32,7 +33,7 @@ namespace Translator.DataMapper.Mappers
             return user;
         }
 
-        public User FindWithPassword(string username)
+        public IUser FindWithPassword(string username)
         {
             var parameters = new[]
             {

@@ -8,9 +8,13 @@ namespace Translator.ViewModels
         [DisplayName("Слово")]
         public string TranslatableWord { get; set; }
         public long TranslatableWordId { get; set; }
+        public long TranslatableLanguageId { get; set; }
+        public long TranslatableLanguage { get; set; }
         [DisplayName("Перевод")]
         public string TranslatedWord { get; set; }
         public long TranslatedWordId { get; set; }
+        public long TranslatedLanguageId { get; set; }
+        public long TranslatedLanguage { get; set; }
 
         public TranslationViewModel()
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Translator.Dependencies;
 using Translator.Domain;
+using Translator.Domain.Interfaces;
 using Translator.ViewModels;
 using Translator.Views;
 
@@ -19,13 +20,19 @@ namespace Translator
             set => Search.Text = value;
         }
 
+        public ILanguage Language
+        {
+            get => targetLanguage.SelectedItem as Language;
+            set => targetLanguage.SelectedItem = value;
+        }
+
         public string TranslatableText
         {
             get => translatableTextbox.Text;
             set => translatableTextbox.Text = value;
         }
 
-        public Language TranslatableLanguage
+        public ILanguage TranslatableLanguage
         {
             get => targetLanguage.SelectedItem as Language;
             set => targetLanguage.SelectedItem = value;
@@ -36,19 +43,14 @@ namespace Translator
             get => translatedTextbox.Text;
             set => translatedTextbox.Text = value;
         }
-        public Language TranslatedLanguage
+
+        public ILanguage TranslatedLanguage
         {
             get => translatedDropdown.SelectedItem as Language;
             set => translatedDropdown.SelectedItem = value;
         }
 
-        public Language Language
-        {
-            get => targetLanguage.SelectedItem as Language;
-            set => targetLanguage.SelectedItem = value;
-        }
-
-        public TranslationViewModel SelectedTranslation { get; set; }
+        public TranslationViewModel SelectedTranslation => GetGridSelectedItem();
 
         public TranslatorForm()
         {
@@ -65,7 +67,7 @@ namespace Translator
             FindTranslations?.Invoke();
         }
 
-        public void UpdateLanguagesList(IEnumerable<Language> languages)
+        public void UpdateLanguagesList(IEnumerable<ILanguage> languages)
         {
             targetLanguage.DataSource = new BindingSource(languages, null);
             targetLanguage.DisplayMember = "Name";
@@ -80,7 +82,7 @@ namespace Translator
             translatedDropdown.ValueMember = "Id";
         }
 
-        public void UpdateTranslationView(IEnumerable<Translation> translations)
+        public void UpdateTranslationView(IEnumerable<ITranslation> translations)
         {
             wordsGrid.DataSource = new BindingSource(translations
                 .Select(t => new TranslationViewModel(t.Id, t.Translatable.Id, t.Translatable.Text, t.Translated.Id,
@@ -91,7 +93,6 @@ namespace Translator
                 wordsGrid.Columns["TranslatableWordId"].Visible = false;
             if (wordsGrid.Columns["TranslatedWordId"] != null)
                 wordsGrid.Columns["TranslatedWordId"].Visible = false;
-
         }
 
         public void ShowAdminPanel()
@@ -123,30 +124,21 @@ namespace Translator
 
         private void EditTranslationButton_Click(object sender, EventArgs e)
         {
-            SelectedTranslation = GetSelected();
             UpdateTextboxes();
         }
 
         private void AddTranslationButton_Click(object sender, EventArgs e)
         {
-            SelectedTranslation = new TranslationViewModel
-            {
-                TranslatableWord = translatableTextbox.Text,
-                TranslatedWord = translatedTextbox.Text
-            };
             AddTranslation?.Invoke();
         }
 
         private void DeleteTranslationButton_Click(object sender, EventArgs e)
         {
-            SelectedTranslation = GetSelected();
             DeleteTranslation?.Invoke();
         }
 
         private void SaveChanges_Click(object sender, EventArgs e)
         {
-            SelectedTranslation.TranslatableWord = translatableTextbox.Text;
-            SelectedTranslation.TranslatedWord = translatedTextbox.Text;
             UpdateTranslation?.Invoke();
         }
 
@@ -156,7 +148,7 @@ namespace Translator
             translatedTextbox.Text = SelectedTranslation.TranslatedWord;
         }
 
-        private TranslationViewModel GetSelected()
+        private TranslationViewModel GetGridSelectedItem()
         {
             TranslationViewModel translation = null;
             if (wordsGrid.SelectedCells.Count > 0)

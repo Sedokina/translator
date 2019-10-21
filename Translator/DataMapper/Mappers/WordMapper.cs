@@ -5,6 +5,7 @@ using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
 using Translator.Domain;
+using Translator.Domain.Interfaces;
 
 namespace Translator.DataMapper.Mappers
 {
@@ -18,7 +19,7 @@ namespace Translator.DataMapper.Mappers
             _dbManager = ServiceLocator.Instance.GetService<IDbManager>();
         }
 
-        public Word Find(long id)
+        public IWord Find(long id)
         {
             var idParameter = _dbManager.CreateParameter("@Id", id, DbType.Int16);
             var reader = _dbManager.GetDataReader(
@@ -38,7 +39,7 @@ namespace Translator.DataMapper.Mappers
             return word;
         }
 
-        public Word Find(string text)
+        public IWord Find(string text)
         {
             var idParameter = _dbManager.CreateParameter("@text", text, DbType.String);
             var reader = _dbManager.GetDataReader(
@@ -58,7 +59,7 @@ namespace Translator.DataMapper.Mappers
             return word;
         }
 
-        public IEnumerable<Word> GetWords()
+        public IEnumerable<IWord> GetWords()
         {
             var reader = _dbManager.GetDataReader(
                 "SELECT words.Id as wordId, words.word, " +
@@ -87,7 +88,7 @@ namespace Translator.DataMapper.Mappers
             " Left Join languages as l on w.languageId = l.id" +
             " Left Join languages as l2 on w2.languageId = l2.id";
 
-        public IEnumerable<Translation> FindTranslation(string text, short languageId)
+        public IEnumerable<ITranslation> FindTranslation(string text, short languageId)
         {
             var parameters = new[]
             {
@@ -98,7 +99,7 @@ namespace Translator.DataMapper.Mappers
                 $"{TranslationRequest} Where l2.id = @languageId and w.word LIKE concat('%', @text, '%')", parameters);
         }
 
-        public Word Add(Word word)
+        public IWord Add(IWord word)
         {
             var parameters = new[]
             {
@@ -152,12 +153,12 @@ namespace Translator.DataMapper.Mappers
                 CommandType.Text, parameters);
         }
 
-        public IEnumerable<Translation> GetTranslations()
+        public IEnumerable<ITranslation> GetTranslations()
         {
             return GetTranslations(TranslationRequest);
         }
 
-        private IEnumerable<Translation> GetTranslations(string request, IDbDataParameter[] parameters = null)
+        private IEnumerable<ITranslation> GetTranslations(string request, IDbDataParameter[] parameters = null)
         {
             var reader = _dbManager.GetDataReader(request, CommandType.Text, parameters, out var connection);
 

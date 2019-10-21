@@ -4,6 +4,7 @@ using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
 using Translator.Domain;
+using Translator.Domain.Interfaces;
 
 namespace Translator.DataMapper.Mappers
 {
@@ -16,7 +17,7 @@ namespace Translator.DataMapper.Mappers
             _dbManager = ServiceLocator.Instance.GetService<IDbManager>();
         }
 
-        public Language Find(short id)
+        public ILanguage Find(short id)
         {
             var idParameter =_dbManager.CreateParameter("@Id", id, DbType.Int16);
             var reader = _dbManager.GetDataReader("SELECT * FROM languages Where id = @Id LIMIT 1",
@@ -31,7 +32,7 @@ namespace Translator.DataMapper.Mappers
             return language;
         }
 
-        public IEnumerable<Language> GetLanguages()
+        public IEnumerable<ILanguage> GetLanguages()
         {
             var reader = _dbManager.GetDataReader("SELECT * FROM languages",
                 CommandType.Text, null, out var connection);

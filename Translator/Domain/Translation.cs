@@ -1,12 +1,14 @@
-﻿namespace Translator.Domain
+﻿using Translator.Domain.Interfaces;
+
+namespace Translator.Domain
 {
-    public class Translation
+    public class Translation : ITranslation
     {
         public long Id { get; private set; }
-        public Word Translatable { get; set; }
-        public Word Translated { get; set; }
+        public IWord Translatable { get; set; }
+        public IWord Translated { get; set; }
 
-        public Translation(long id, Word translatable, Word translated)
+        public Translation(long id, IWord translatable, IWord translated)
         {
             Id = id;
             Translatable = translatable;

@@ -5,6 +5,7 @@ using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
 using Translator.Domain;
+using Translator.Domain.Interfaces;
 
 namespace Translator.DataMapper.Mappers
 {
@@ -17,7 +18,7 @@ namespace Translator.DataMapper.Mappers
             _dbManager = ServiceLocator.Instance.GetService<IDbManager>();
         }
 
-        public IEnumerable<Role> GetRoles()
+        public IEnumerable<IRole> GetRoles()
         {
            var reader = _dbManager.GetDataReader(
                 "SELECT * FROM roles",
@@ -33,7 +34,7 @@ namespace Translator.DataMapper.Mappers
            return roles;
         }
 
-        public IEnumerable<Role> GetUserRoles(int id)
+        public IEnumerable<IRole> GetUserRoles(int id)
         {
             var idParameter = _dbManager.CreateParameter("@id", id, DbType.Int32);
             var reader = _dbManager.GetDataReader(

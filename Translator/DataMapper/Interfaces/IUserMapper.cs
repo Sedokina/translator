@@ -1,10 +1,11 @@
 ﻿using Translator.Domain;
+using Translator.Domain.Interfaces;
 
 namespace Translator.DataMapper.Interfaces
 {
     public interface IUserMapper
     {
-        User Find(string username);
-        User FindWithPassword(string username);
+        IUser Find(string username);
+        IUser FindWithPassword(string username);
     }
 }

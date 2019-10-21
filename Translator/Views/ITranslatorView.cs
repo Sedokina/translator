@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Translator.Domain;
+using Translator.Domain.Interfaces;
 using Translator.ViewModels;
 
 namespace Translator.Views
@@ -8,18 +8,18 @@ namespace Translator.Views
     public interface ITranslatorView : IView
     {
         string SearchingText { get; set; }
+        ILanguage Language { get; set; }
         string TranslatableText { get; set; }
-        Language TranslatableLanguage { get; set; }
+        ILanguage TranslatableLanguage { get; set; }
         string TranslatedText { get; set; }
-        Language TranslatedLanguage { get; set; }
-        Language Language { get; set; }
-        TranslationViewModel SelectedTranslation { get; set; }
+        ILanguage TranslatedLanguage { get; set; }
+        TranslationViewModel SelectedTranslation { get; }
         event Action FindTranslations;
         event Action AddTranslation;
         event Action UpdateTranslation;
         event Action DeleteTranslation;
-        void UpdateLanguagesList(IEnumerable<Language> languages);
-        void UpdateTranslationView(IEnumerable<Translation> translations);
+        void UpdateLanguagesList(IEnumerable<ILanguage> languages);
+        void UpdateTranslationView(IEnumerable<ITranslation> translations);
         void ShowAdminPanel();
     }
 }
