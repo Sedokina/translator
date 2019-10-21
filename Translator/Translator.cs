@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using Translator.Dependencies;
 using Translator.Domain;
 using Translator.Domain.Interfaces;
-using Translator.ViewModels;
 using Translator.Views;
 
 namespace Translator
@@ -35,7 +34,7 @@ namespace Translator
         public ILanguage TranslatableLanguage
         {
             get => targetLanguage.SelectedItem as Language;
-            set => targetLanguage.SelectedItem = value;
+            set => translatableDropdown.SelectedIndex = translatableDropdown.FindString(value.Name);
         }
 
         public string TranslatedText
@@ -47,10 +46,10 @@ namespace Translator
         public ILanguage TranslatedLanguage
         {
             get => translatedDropdown.SelectedItem as Language;
-            set => translatedDropdown.SelectedItem = value;
+            set => translatedDropdown.SelectedIndex = translatedDropdown.FindString(value.Name);
         }
 
-        public TranslationViewModel SelectedTranslation => GetGridSelectedItem();
+        public ITranslation SelectedTranslation => GetGridSelectedItemIt();
 
         public TranslatorForm()
         {
@@ -61,6 +60,7 @@ namespace Translator
         public event Action AddTranslation;
         public event Action UpdateTranslation;
         public event Action DeleteTranslation;
+        public event Action GetSelectedTranslation;
 
         private void Translate_Click(object sender, EventArgs e)
         {
@@ -85,14 +85,30 @@ namespace Translator
         public void UpdateTranslationView(IEnumerable<ITranslation> translations)
         {
             wordsGrid.DataSource = new BindingSource(translations
-                .Select(t => new TranslationViewModel(t.Id, t.Translatable.Id, t.Translatable.Text, t.Translated.Id,
-                    t.Translated.Text)), null);
+                .Select(t => new
+                {
+                    Id = t.Id,
+                    TranslatableId = t.Translatable.Id,
+                    TranslatableLanguage = t.Translatable.Language.Name,
+                    TranslatableWord = t.Translatable.Text,
+                    TranslatedId = t.Translated.Id,
+                    TranslatedLanguage = t.Translated.Language.Name,
+                    TranslatedWord = t.Translated.Text
+                }), null);
             if (wordsGrid.Columns["Id"] != null)
                 wordsGrid.Columns["Id"].Visible = false;
-            if (wordsGrid.Columns["TranslatableWordId"] != null)
-                wordsGrid.Columns["TranslatableWordId"].Visible = false;
-            if (wordsGrid.Columns["TranslatedWordId"] != null)
-                wordsGrid.Columns["TranslatedWordId"].Visible = false;
+            if (wordsGrid.Columns["TranslatableId"] != null)
+                wordsGrid.Columns["TranslatableId"].Visible = false;
+            if (wordsGrid.Columns["TranslatedId"] != null)
+                wordsGrid.Columns["TranslatedId"].Visible = false;
+            if (wordsGrid.Columns["TranslatableLanguage"] != null)
+                wordsGrid.Columns["TranslatableLanguage"].Visible = false;
+            if (wordsGrid.Columns["TranslatedLanguage"] != null)
+                wordsGrid.Columns["TranslatedLanguage"].Visible = false;
+            if (wordsGrid.Columns["TranslatableWord"] != null)
+                wordsGrid.Columns["TranslatableWord"].HeaderText = "Слово";
+            if (wordsGrid.Columns["TranslatedWord"] != null)
+                wordsGrid.Columns["TranslatedWord"].HeaderText = "Перевод";
         }
 
         public void ShowAdminPanel()
@@ -124,7 +140,7 @@ namespace Translator
 
         private void EditTranslationButton_Click(object sender, EventArgs e)
         {
-            UpdateTextboxes();
+            GetSelectedTranslation?.Invoke();
         }
 
         private void AddTranslationButton_Click(object sender, EventArgs e)
@@ -141,28 +157,27 @@ namespace Translator
         {
             UpdateTranslation?.Invoke();
         }
-
-        private void UpdateTextboxes()
+        
+        private ITranslation GetGridSelectedItemIt()
         {
-            translatableTextbox.Text = SelectedTranslation.TranslatableWord;
-            translatedTextbox.Text = SelectedTranslation.TranslatedWord;
-        }
-
-        private TranslationViewModel GetGridSelectedItem()
-        {
-            TranslationViewModel translation = null;
+            ITranslation translation = null;
             if (wordsGrid.SelectedCells.Count > 0)
             {
                 var rowIndex = wordsGrid.SelectedCells[0].RowIndex;
                 var selectedRow = wordsGrid.Rows[rowIndex];
-                translation = new TranslationViewModel(
+                translation = new Translation(
                     Convert.ToInt64(selectedRow.Cells["Id"].Value),
-                    Convert.ToInt64(selectedRow.Cells["TranslatableWordId"].Value),
-                    Convert.ToString(selectedRow.Cells["TranslatableWord"].Value),
-                    Convert.ToInt64(selectedRow.Cells["TranslatedWordId"].Value),
-                    Convert.ToString(selectedRow.Cells["TranslatedWord"].Value)
+                    new Word(Convert.ToInt64(selectedRow.Cells["TranslatableId"].Value),
+                        Convert.ToString(selectedRow.Cells["TranslatableWord"].Value),
+                        new Language { Name = Convert.ToString(selectedRow.Cells["TranslatableLanguage"].Value) }
+                    ),
+                    new Word(Convert.ToInt64(selectedRow.Cells["TranslatedId"].Value),
+                        Convert.ToString(selectedRow.Cells["TranslatedWord"].Value),
+                        new Language { Name = Convert.ToString(selectedRow.Cells["TranslatedLanguage"].Value) }
+                    )
                 );
             }
+
             return translation;
         }
     }

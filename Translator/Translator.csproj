@@ -92,7 +92,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dependencies\IServiceLocator.cs" />
     <Compile Include="Dependencies\ServiceLocator.cs" />
-    <Compile Include="ViewModels\TranslationViewModel.cs" />
     <Compile Include="AuthorizationForm.cs">
       <SubType>Form</SubType>
     </Compile>

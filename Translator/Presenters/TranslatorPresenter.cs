@@ -19,9 +19,11 @@ namespace Translator.Presenters
             GetLanguages();
             GetTranslations();
             View.FindTranslations += () => FindTranslations(View.SearchingText, View.Language);
-
+           
             if (User.IsInRole(RolesResource.Administrator))
             {
+                View.GetSelectedTranslation += () => GetSelectedTranslation(View.SelectedTranslation);
+
                 View.UpdateTranslation += () => UpdateTranslation(View.SelectedTranslation.Id,
                     View.TranslatableText, View.TranslatableLanguage,
                     View.TranslatedText, View.TranslatedLanguage);
@@ -53,6 +55,14 @@ namespace Translator.Presenters
             }
 
             View.UpdateTranslationView(translation);
+        }
+
+        public void GetSelectedTranslation(ITranslation translation)
+        {
+            View.TranslatableText = translation.Translatable.Text;
+            View.TranslatableLanguage = new Language {Name = translation.Translatable.Language.Name};
+            View.TranslatedText = translation.Translated.Text;
+            View.TranslatedLanguage = new Language {Name = translation.Translated.Language.Name};
         }
 
         public void UpdateTranslation(long translationId, string translatableWord, ILanguage translatableLanguage,

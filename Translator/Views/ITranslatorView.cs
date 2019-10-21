@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Translator.Domain.Interfaces;
-using Translator.ViewModels;
 
 namespace Translator.Views
 {
@@ -13,11 +12,12 @@ namespace Translator.Views
         ILanguage TranslatableLanguage { get; set; }
         string TranslatedText { get; set; }
         ILanguage TranslatedLanguage { get; set; }
-        TranslationViewModel SelectedTranslation { get; }
+        ITranslation SelectedTranslation { get; }
         event Action FindTranslations;
         event Action AddTranslation;
         event Action UpdateTranslation;
         event Action DeleteTranslation;
+        event Action GetSelectedTranslation;
         void UpdateLanguagesList(IEnumerable<ILanguage> languages);
         void UpdateTranslationView(IEnumerable<ITranslation> translations);
         void ShowAdminPanel();

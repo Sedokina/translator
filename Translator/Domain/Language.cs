@@ -11,6 +11,7 @@ namespace Translator.Domain
         {
         }
 
+
         public Language(short id, string name)
         {
             Id = id;
