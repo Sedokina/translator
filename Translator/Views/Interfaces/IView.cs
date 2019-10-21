@@ -1,4 +1,4 @@
-﻿namespace Translator.Views
+﻿namespace Translator.Views.Interfaces
 {
     public interface IView
     {

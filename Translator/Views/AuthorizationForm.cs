@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using Translator.Dependencies;
-using Translator.Views;
+using Translator.Views.Interfaces;
 
-namespace Translator
+namespace Translator.Views
 {
     public partial class AuthorizationForm : Form, IAuthorizationView
     {

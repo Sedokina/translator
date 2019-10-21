@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Translator.Views
+namespace Translator.Views.Interfaces
 {
     public interface IAuthorizationView : IView
     {

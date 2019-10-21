@@ -7,8 +7,8 @@
     <ProjectGuid>{B102E618-C4DF-4B0B-AEDC-3D5499C27CAB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Translator.DataAccess</RootNamespace>
-    <AssemblyName>Translator.DataAccess</AssemblyName>
+    <RootNamespace>Translator.Infrastructure</RootNamespace>
+    <AssemblyName>Translator.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="DatabaseAdapters\MySqlDatabaseAdapter.cs" />
     <Compile Include="DbManager.cs" />
-    <Compile Include="IDatabaseAdapter.cs" />
+    <Compile Include="DatabaseAdapters\IDatabaseAdapter.cs" />
     <Compile Include="IDbManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

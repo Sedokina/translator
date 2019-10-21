@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Translator.Domain.Domains;
 
 namespace Translator.Domain.Interfaces
 {
@@ -6,7 +7,7 @@ namespace Translator.Domain.Interfaces
     {
         int Id { get; }
         string Username { get; set; }
-        List<Role> Roles { get; }
+        List<IRole> Roles { get; }
         bool IsAuthorized { get; }
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Translator.Dependencies;
-using Translator.Domain;
+using Translator.Domain.Domains;
 using Translator.Domain.Interfaces;
-using Translator.Views;
+using Translator.Views.Interfaces;
 
-namespace Translator
+namespace Translator.Views
 {
     public partial class TranslatorForm : Form, ITranslatorView
     {

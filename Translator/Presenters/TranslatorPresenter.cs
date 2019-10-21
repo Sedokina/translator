@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
-using Translator.Domain;
+using Translator.Domain.Domains;
 using Translator.Domain.Interfaces;
-using Translator.Views;
+using Translator.Resources;
+using Translator.Views.Interfaces;
 
 namespace Translator.Presenters
 {
@@ -11,7 +12,6 @@ namespace Translator.Presenters
     {
         private readonly ILanguageMapper _languageMapper = ServiceLocator.Instance.GetService<ILanguageMapper>();
         private readonly IWordMapper _wordMapper = ServiceLocator.Instance.GetService<IWordMapper>();
-        protected readonly User User = ServiceLocator.Instance.GetService<User>();
 
         public TranslatorPresenter()
         {
@@ -20,7 +20,7 @@ namespace Translator.Presenters
             GetTranslations();
             View.FindTranslations += () => FindTranslations(View.SearchingText, View.Language);
            
-            if (User.IsInRole(RolesResource.Administrator))
+            if (Credentials.IsInRole(RolesResource.Administrator))
             {
                 View.GetSelectedTranslation += () => GetSelectedTranslation(View.SelectedTranslation);
 
@@ -51,7 +51,7 @@ namespace Translator.Presenters
             var translation = _wordMapper.FindTranslation(searchingText, language.Id).ToList();
             if (!translation.Any())
             {
-                View.ShowError(Resources.TranslationNotFound);
+                View.ShowError(MainResources.TranslationNotFound);
             }
 
             View.UpdateTranslationView(translation);

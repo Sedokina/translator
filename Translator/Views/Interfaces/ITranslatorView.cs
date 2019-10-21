@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Translator.Domain.Interfaces;
 
-namespace Translator.Views
+namespace Translator.Views.Interfaces
 {
     public interface ITranslatorView : IView
     {

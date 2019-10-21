@@ -4,7 +4,10 @@ using System.Windows.Forms;
 using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
 using Translator.DataMapper.Mappers;
+using Translator.Services;
+using Translator.Services.Interfaces;
 using Translator.Views;
+using Translator.Views.Interfaces;
 
 namespace Translator.Dependencies
 {
@@ -73,6 +76,9 @@ namespace Translator.Dependencies
             // Views
             _servicesType.Add(typeof(IAuthorizationView), typeof(AuthorizationForm));
             _servicesType.Add(typeof(ITranslatorView), typeof(TranslatorForm));
+
+            // Services
+            _servicesType.Add(typeof(ICredentialsService), typeof(CredentialsService));
 
             // App context
             _servicesType.Add(typeof(ApplicationContext), typeof(ApplicationContext));

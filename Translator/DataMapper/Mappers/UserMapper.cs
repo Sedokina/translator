@@ -3,7 +3,7 @@ using System.Data;
 using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
-using Translator.Domain;
+using Translator.Domain.Domains;
 using Translator.Domain.Interfaces;
 
 namespace Translator.DataMapper.Mappers
@@ -33,7 +33,7 @@ namespace Translator.DataMapper.Mappers
             return user;
         }
 
-        public IUser FindWithPassword(string username)
+        public IUser FindWithPassword(string username, out string password)
         {
             var parameters = new[]
             {
@@ -44,9 +44,12 @@ namespace Translator.DataMapper.Mappers
                 CommandType.Text, parameters, out var connection);
 
             User user = null;
+            password = string.Empty;
+
             if (reader.Read())
             {
-                user = new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+                user = new User(reader.GetInt32(0), reader.GetString(1));
+                password = reader.GetString(2);
             }
             connection.Close();
             return user;

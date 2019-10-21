@@ -3,54 +3,32 @@ using System.Linq;
 using BCrypt.Net;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
+using Translator.Domain.Domains;
 using Translator.Domain.Interfaces;
+using Translator.Services.Interfaces;
 
-namespace Translator.Domain
+namespace Translator.Services
 {
-    public class User : IUser
+    public class CredentialsService : ICredentialsService, IUser
     {
         private readonly IUserMapper _userMapper = ServiceLocator.Instance.GetService<IUserMapper>();
         private readonly IRoleMapper _roleMapper = ServiceLocator.Instance.GetService<IRoleMapper>();
-        private readonly string _password;
 
         public int Id { get; private set; }
         public string Username { get; set; }
-        public List<Role> Roles { get; private set; }
+        public List<IRole> Roles { get; private set; }
         public bool IsAuthorized { get; private set; }
-
-        public User()
-        {
-            
-        }
-
-        public User(int id, string username)
-        {
-            Id = id;
-            Username = username;
-        }
-
-        public User(int id, string username, string password)
-        {
-            _password = password;
-            Id = id;
-            Username = username;
-        }
-
-        public override string ToString()
-        {
-            return $"{nameof(Id)}: {Id}, {nameof(Username)}: {Username}";
-        }
 
         public bool Authorize(string username, string password)
         {
-            var user = _userMapper.FindWithPassword(username) as User;
-            if (user == null || !BCrypt.Net.BCrypt.EnhancedVerify(password, user._password, HashType.SHA256))
+            var user = _userMapper.FindWithPassword(username, out string actualPassword);
+            if (user == null || !BCrypt.Net.BCrypt.EnhancedVerify(password, actualPassword, HashType.SHA256))
                 return IsAuthorized = false;
 
             Id = user.Id;
             Username = user.Username;
 
-            var roles = _roleMapper.GetUserRoles(Id) as List<Role>;
+            var roles = _roleMapper.GetUserRoles(Id);
             if (roles == null)
                 return IsAuthorized = false;
             Roles = roles.ToList();

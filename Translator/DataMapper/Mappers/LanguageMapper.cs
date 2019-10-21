@@ -3,7 +3,7 @@ using System.Data;
 using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
-using Translator.Domain;
+using Translator.Domain.Domains;
 using Translator.Domain.Interfaces;
 
 namespace Translator.DataMapper.Mappers

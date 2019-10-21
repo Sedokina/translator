@@ -1,4 +1,4 @@
-﻿namespace Translator
+﻿namespace Translator.Views
 {
     partial class AuthorizationForm
     {

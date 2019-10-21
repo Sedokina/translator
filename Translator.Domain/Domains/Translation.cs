@@ -1,6 +1,6 @@
 ﻿using Translator.Domain.Interfaces;
 
-namespace Translator.Domain
+namespace Translator.Domain.Domains
 {
     public class Translation : ITranslation
     {

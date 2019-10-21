@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Translator {
+namespace Translator.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Translator {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class RolesResource {
+    internal class MainResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal RolesResource() {
+        internal MainResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Translator {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Translator.RolesResource", typeof(RolesResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Translator.Resources.MainResources", typeof(MainResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace Translator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrator.
+        ///   Looks up a localized string similar to Перевод не найден.
         /// </summary>
-        internal static string Administrator {
+        internal static string TranslationNotFound {
             get {
-                return ResourceManager.GetString("Administrator", resourceCulture);
+                return ResourceManager.GetString("TranslationNotFound", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User.
+        ///   Looks up a localized string similar to Неверный логин или пароль.
         /// </summary>
-        internal static string User {
+        internal static string WrongCredentials {
             get {
-                return ResourceManager.GetString("User", resourceCulture);
+                return ResourceManager.GetString("WrongCredentials", resourceCulture);
             }
         }
     }

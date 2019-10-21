@@ -1,6 +1,6 @@
 ﻿using Translator.Dependencies;
-using Translator.Domain;
-using Translator.Views;
+using Translator.Resources;
+using Translator.Views.Interfaces;
 
 namespace Translator.Presenters
 {
@@ -14,15 +14,14 @@ namespace Translator.Presenters
 
         public void Authorize(string username, string password)
         {
-            var user = new User();
-            if (user.Authorize(username, password))
+            if (Credentials.Authorize(username, password)) //user.Authorize(username, password)
             {
                 new TranslatorPresenter().Run();
                 View.Close();
             }
             else
             {
-                View.ShowError(Resources.WrongCredentials);
+                View.ShowError(MainResources.WrongCredentials);
             }
         }
     }

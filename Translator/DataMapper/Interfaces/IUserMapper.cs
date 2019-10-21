@@ -6,6 +6,6 @@ namespace Translator.DataMapper.Interfaces
     public interface IUserMapper
     {
         IUser Find(string username);
-        IUser FindWithPassword(string username);
+        IUser FindWithPassword(string username, out string password);
     }
 }
