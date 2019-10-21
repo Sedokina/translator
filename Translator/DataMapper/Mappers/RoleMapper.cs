@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
@@ -12,6 +11,9 @@ namespace Translator.DataMapper.Mappers
     public class RoleMapper : IRoleMapper
     {
         private readonly IDbManager _dbManager;
+        private static readonly string BaseRequest = "SELECT roles.id, roles.name FROM roles";
+        private static readonly string UserRolesRequest =
+            $"{BaseRequest} LEFT JOIN user_roles ON roles.id = user_roles.roleId Where user_roles.userId = @id";
 
         public RoleMapper()
         {
@@ -20,28 +22,21 @@ namespace Translator.DataMapper.Mappers
 
         public IEnumerable<IRole> GetRoles()
         {
-           var reader = _dbManager.GetDataReader(
-                "SELECT * FROM roles",
-                CommandType.Text, null, out var connection);
-
-           var roles = new List<Role>();
-           while (reader.Read())
-           {
-               var role = new Role(reader.GetInt16(0), reader.GetString(1));
-               roles.Add(role);
-           }
-           connection.Close();
-           return roles;
+            return ExecuteListQuery(BaseRequest);
         }
 
         public IEnumerable<IRole> GetUserRoles(int id)
         {
-            var idParameter = _dbManager.CreateParameter("@id", id, DbType.Int32);
-            var reader = _dbManager.GetDataReader(
-                "SELECT roles.id, roles.name FROM roles" +
-                " LEFT JOIN user_roles ON roles.id = user_roles.roleId" +
-                " Where user_roles.userId = @id",
-                CommandType.Text, new []{idParameter}, out var connection);
+            var parameters = new[]
+            {
+                _dbManager.CreateParameter("@id", id, DbType.Int32)
+            };
+            return ExecuteListQuery(UserRolesRequest, parameters);
+        }
+
+        private IEnumerable<IRole> ExecuteListQuery(string request, IDbDataParameter[] parameters = null)
+        {
+            var reader = _dbManager.GetDataReader(request, CommandType.Text, parameters, out var connection);
 
             var roles = new List<Role>();
             while (reader.Read())

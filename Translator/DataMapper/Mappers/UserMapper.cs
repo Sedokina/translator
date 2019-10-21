@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
@@ -11,6 +10,7 @@ namespace Translator.DataMapper.Mappers
     public class UserMapper : IUserMapper
     {
         private readonly IDbManager _dbManager;
+        private static readonly string GetUserRequest = "SELECT id, username, password FROM users WHERE username = @username";
 
         public UserMapper()
         {
@@ -19,18 +19,11 @@ namespace Translator.DataMapper.Mappers
 
         public IUser Find(string username)
         {
-            var idParameter = _dbManager.CreateParameter("@username", username, DbType.Int32);
-            var reader = _dbManager.GetDataReader(
-                "SELECT id, username FROM users WHERE username = @username",
-                CommandType.Text, new[] { idParameter }, out var connection);
-
-            User user = null;
-            if (reader.Read())
+            var parameters = new[]
             {
-                user = new User(reader.GetInt32(0), reader.GetString(1));
-            }
-            connection.Close();
-            return user;
+                _dbManager.CreateParameter("@username", username, DbType.String)
+            };
+            return ExecuteObjectQuery(GetUserRequest, out string password, parameters);
         }
 
         public IUser FindWithPassword(string username, out string password)
@@ -39,9 +32,12 @@ namespace Translator.DataMapper.Mappers
             {
                 _dbManager.CreateParameter("@username", username, DbType.String)
             };
-            var reader = _dbManager.GetDataReader(
-                "SELECT id, username, password FROM users WHERE username = @username",
-                CommandType.Text, parameters, out var connection);
+            return ExecuteObjectQuery(GetUserRequest, out password, parameters);
+        }
+
+        public IUser ExecuteObjectQuery(string request, out string password, IDbDataParameter[] parameters = null)
+        {
+            var reader = _dbManager.GetDataReader(request, CommandType.Text, parameters, out var connection);
 
             User user = null;
             password = string.Empty;

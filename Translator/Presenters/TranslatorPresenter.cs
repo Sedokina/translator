@@ -12,6 +12,7 @@ namespace Translator.Presenters
     {
         private readonly ILanguageMapper _languageMapper = ServiceLocator.Instance.GetService<ILanguageMapper>();
         private readonly IWordMapper _wordMapper = ServiceLocator.Instance.GetService<IWordMapper>();
+        private readonly ITranslationMapper _translationMapper = ServiceLocator.Instance.GetService<ITranslationMapper>();
 
         public TranslatorPresenter()
         {
@@ -43,12 +44,12 @@ namespace Translator.Presenters
 
         public void GetTranslations()
         {
-            View.UpdateTranslationView(_wordMapper.GetTranslations());
+            View.UpdateTranslationView(_translationMapper.GetTranslations());
         }
 
         public void FindTranslations(string searchingText, ILanguage language)
         {
-            var translation = _wordMapper.FindTranslation(searchingText, language.Id).ToList();
+            var translation = _translationMapper.FindTranslation(searchingText, language.Id).ToList();
             if (!translation.Any())
             {
                 View.ShowError(MainResources.TranslationNotFound);
@@ -72,7 +73,7 @@ namespace Translator.Presenters
                                _wordMapper.Add(new Word(translatableWord, translatableLanguage));
             var translated = _wordMapper.Find(translatedWord) ??
                              _wordMapper.Add(new Word(translatedWord, translatedLanguage));
-            _wordMapper.UpdateTranslate(translationId, translatable.Id, translated.Id);
+            _translationMapper.Update(translationId, translatable.Id, translated.Id);
             GetTranslations();
         }
 
@@ -83,13 +84,13 @@ namespace Translator.Presenters
                                _wordMapper.Add(new Word(translatableWord, translatableLanguage));
             var translated = _wordMapper.Find(translatedWord) ??
                              _wordMapper.Add(new Word(translatedWord, translatedLanguage));
-            _wordMapper.AddTranslate(translatable.Id, translated.Id);
+            _translationMapper.Add(translatable.Id, translated.Id);
             GetTranslations();
         }
 
         public void DeleteTranslation(long translationId)
         {
-            _wordMapper.Delete(translationId);
+            _translationMapper.Delete(translationId);
             GetTranslations();
         }
     }

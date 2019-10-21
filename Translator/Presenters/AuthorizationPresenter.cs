@@ -14,7 +14,7 @@ namespace Translator.Presenters
 
         public void Authorize(string username, string password)
         {
-            if (Credentials.Authorize(username, password)) //user.Authorize(username, password)
+            if (Credentials.Authorize(username, password))
             {
                 new TranslatorPresenter().Run();
                 View.Close();

@@ -70,6 +70,7 @@ namespace Translator.Dependencies
             _servicesType.Add(typeof(IDbManager), typeof(DbManager));
             _servicesType.Add(typeof(ILanguageMapper), typeof(LanguageMapper));
             _servicesType.Add(typeof(IWordMapper), typeof(WordMapper));
+            _servicesType.Add(typeof(ITranslationMapper), typeof(TranslationMapper));
             _servicesType.Add(typeof(IRoleMapper), typeof(RoleMapper));
             _servicesType.Add(typeof(IUserMapper), typeof(UserMapper));
 

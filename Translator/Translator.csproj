@@ -52,10 +52,12 @@
   <ItemGroup>
     <Compile Include="DataMapper\Interfaces\ILanguageMapper.cs" />
     <Compile Include="DataMapper\Interfaces\IRoleMapper.cs" />
+    <Compile Include="DataMapper\Interfaces\ITranslationMapper.cs" />
     <Compile Include="DataMapper\Interfaces\IUserMapper.cs" />
     <Compile Include="DataMapper\Interfaces\IWordMapper.cs" />
     <Compile Include="DataMapper\Mappers\LanguageMapper.cs" />
     <Compile Include="DataMapper\Mappers\RoleMapper.cs" />
+    <Compile Include="DataMapper\Mappers\TranslationMapper.cs" />
     <Compile Include="DataMapper\Mappers\UserMapper.cs" />
     <Compile Include="DataMapper\Mappers\WordMapper.cs" />
     <Compile Include="Resources\MainResources.Designer.cs">

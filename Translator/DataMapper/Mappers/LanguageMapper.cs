@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Translator.DataAccess;
 using Translator.DataMapper.Interfaces;
 using Translator.Dependencies;
@@ -11,6 +12,8 @@ namespace Translator.DataMapper.Mappers
     public class LanguageMapper : ILanguageMapper
     {
         private readonly IDbManager _dbManager;
+        private static readonly string BaseRequest = "SELECT * FROM languages";
+        private static readonly string FindRequest = $"{BaseRequest} WHERE id = @Id LIMIT 1";
 
         public LanguageMapper()
         {
@@ -19,23 +22,21 @@ namespace Translator.DataMapper.Mappers
 
         public ILanguage Find(short id)
         {
-            var idParameter =_dbManager.CreateParameter("@Id", id, DbType.Int16);
-            var reader = _dbManager.GetDataReader("SELECT * FROM languages Where id = @Id LIMIT 1",
-                CommandType.Text, new []{ idParameter }, out var connection);
-
-            Language language = null;
-            if(reader.Read())   
+            var parameters = new[]
             {
-                language = new Language(reader.GetInt16(0), reader.GetString(1));
-            }
-            connection.Close();
-            return language;
+                _dbManager.CreateParameter("@Id", id, DbType.Int16)
+            };
+            return ExecuteListQuery(FindRequest, parameters).FirstOrDefault();
         }
 
         public IEnumerable<ILanguage> GetLanguages()
         {
-            var reader = _dbManager.GetDataReader("SELECT * FROM languages",
-                CommandType.Text, null, out var connection);
+            return ExecuteListQuery(BaseRequest);
+        }
+
+        private IEnumerable<ILanguage> ExecuteListQuery(string request, IDbDataParameter[] parameters = null)
+        {
+            var reader = _dbManager.GetDataReader(request, CommandType.Text, parameters, out var connection);
 
             var languages = new List<Language>();
             while (reader.Read())
